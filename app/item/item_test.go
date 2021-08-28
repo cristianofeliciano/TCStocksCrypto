@@ -8,15 +8,15 @@ import (
 	"github.com/tradersclub/TCUtils/do"
 	"github.com/tradersclub/TCUtils/tcerr"
 
-	"github.com/tradersclub/TCTemplateBack/store"
-	"github.com/tradersclub/TCTemplateBack/test"
+	"github.com/luannevesbtc/TCStocksCrypto/store"
+	"github.com/luannevesbtc/TCStocksCrypto/test"
 
 	"github.com/golang/mock/gomock"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/tradersclub/TCTemplateBack/app/health"
-	"github.com/tradersclub/TCTemplateBack/mocks"
-	"github.com/tradersclub/TCTemplateBack/model"
+	"github.com/luannevesbtc/TCStocksCrypto/app/health"
+	"github.com/luannevesbtc/TCStocksCrypto/mocks"
+	"github.com/luannevesbtc/TCStocksCrypto/model"
 )
 
 func TestPing(t *testing.T) {
