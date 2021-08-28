@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
-	health "github.com/tradersclub/TCTemplateBack/api/health"
-	v1 "github.com/tradersclub/TCTemplateBack/api/v1"
-	"github.com/tradersclub/TCTemplateBack/app"
+	health "github.com/luannevesbtc/TCStocksCrypto/api/health"
+	v1 "github.com/luannevesbtc/TCStocksCrypto/api/v1"
+	"github.com/luannevesbtc/TCStocksCrypto/app"
 	"github.com/tradersclub/TCUtils/logger"
 )
 

@@ -5,10 +5,10 @@ import (
 
 	"github.com/nats-io/nats.go"
 
+	"github.com/luannevesbtc/TCStocksCrypto/app/crypto"
+	"github.com/luannevesbtc/TCStocksCrypto/app/health"
+	"github.com/luannevesbtc/TCStocksCrypto/store"
 	auth "github.com/tradersclub/TCAuth/middleware/echo"
-	"github.com/tradersclub/TCTemplateBack/app/health"
-	"github.com/tradersclub/TCTemplateBack/app/item"
-	"github.com/tradersclub/TCTemplateBack/store"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/logger"
 )
@@ -16,7 +16,7 @@ import (
 // Container modelo para exportação dos serviços instanciados
 type Container struct {
 	Health  health.App
-	Item    item.App
+	Crypto  crypto.App
 	Session auth.Middleware
 }
 
@@ -36,7 +36,7 @@ func New(opts Options) *Container {
 
 	container := &Container{
 		Health:  health.NewApp(opts.Stores, opts.Version, opts.StartedAt),
-		Item:    item.NewApp(opts.Stores, opts.Nats, opts.Cache),
+		Crypto:  crypto.NewApp(opts.Stores, opts.Nats, opts.Cache),
 		Session: opts.Session,
 	}
 

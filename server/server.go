@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
+	"github.com/luannevesbtc/TCStocksCrypto/api/swagger"
+	"github.com/luannevesbtc/TCStocksCrypto/store"
 	"github.com/nats-io/nats.go"
-	"github.com/tradersclub/TCTemplateBack/api/swagger"
-	"github.com/tradersclub/TCTemplateBack/store"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/logger"
 	"github.com/tradersclub/TCUtils/natstan"
@@ -19,11 +19,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/tradersclub/TCTemplateBack/api"
-	"github.com/tradersclub/TCTemplateBack/app"
-	pocConfig "github.com/tradersclub/TCTemplateBack/config"
-	"github.com/tradersclub/TCTemplateBack/event"
-	"github.com/tradersclub/TCTemplateBack/model"
+	"github.com/luannevesbtc/TCStocksCrypto/api"
+	"github.com/luannevesbtc/TCStocksCrypto/app"
+	pocConfig "github.com/luannevesbtc/TCStocksCrypto/config"
+	"github.com/luannevesbtc/TCStocksCrypto/event"
+	"github.com/luannevesbtc/TCStocksCrypto/model"
 
 	auth "github.com/tradersclub/TCAuth/middleware/echo"
 )
@@ -70,10 +70,9 @@ func (e *server) Start() {
 	e.Echo.Use(emiddleware.Recover())
 	e.Echo.Use(emiddleware.RequestID())
 
-	e.Prometheus = prometheus.NewPrometheus("TCTemplateBack", nil)
+	e.Prometheus = prometheus.NewPrometheus("TCStocksCrypto", nil)
 	e.Prometheus.Use(e.Echo)
 
-	e.StartDB()
 	e.StartNats()
 	e.Cache = cache.NewMemcache(pocConfig.ConfigGlobal.Cache)
 	e.StartTCAuthClient()
@@ -158,39 +157,7 @@ func (e *server) StartNats() {
 	})
 }
 
-func (e *server) startDBReader() {
-	var err error
-	e.Ctx, e.StopDBReader = context.WithCancel(context.Background())
-	e.DBReader, err = sqlx.ConnectContext(e.Ctx, "mysql", pocConfig.ConfigGlobal.Database.Reader.URL)
-	if err != nil {
-		logger.ErrorContext(e.Ctx, "Not connect DB Reader: ", err.Error())
-		return
-	}
-	logger.Info("DB Reader was connected")
-}
-
-func (e *server) startDBWriter() {
-	var err error
-	e.Ctx, e.StopDBWriter = context.WithCancel(context.Background())
-	e.DBWriter, err = sqlx.ConnectContext(e.Ctx, "mysql", pocConfig.ConfigGlobal.Database.Writer.URL)
-	if err != nil {
-		logger.ErrorContext(e.Ctx, "Not connect DB Writer: ", err.Error())
-		return
-	}
-	logger.Info("DB Writer was connected")
-}
-
-func (e *server) StartDB() {
-	e.startDBReader()
-	e.startDBWriter()
-	e.Store = store.New(store.Options{
-		Writer: e.DBWriter,
-		Reader: e.DBReader,
-	})
-}
-
 func (e *server) Stop() {
-	e.StopDB()
 	e.Nats.Close()
 	e.CloseTCAuth()
 	if err := e.Echo.Close(); err != nil {
@@ -198,33 +165,12 @@ func (e *server) Stop() {
 	}
 }
 
-func (e *server) StopDB() {
-	if e.DBReader != nil {
-		if err := e.DBReader.Close(); err != nil {
-			logger.Error("Cannot close dabatabse Reader: ", err.Error())
-		} else {
-			e.StopDBReader()
-			logger.Info("Closed DBReader")
-		}
-	}
-	if e.DBWriter != nil {
-		if err := e.DBWriter.Close(); err != nil {
-			logger.Error("Cannot close dabatabse Writer: ", err.Error())
-		} else {
-			e.StopDBWriter()
-			logger.Info("Closed DBWriter")
-		}
-	}
-}
-
 // ReloadConnections all connections like DB, Nats, ...
 func (e *server) ReloadConnections() {
-	e.StopDB()
 	e.Nats.Close()
 	e.CloseTCAuth()
 
 	logger.Info("Close all connections...")
-	e.StartDB()
 	e.StartNats()
 	e.ConnectTCAuthClient()
 

@@ -6,8 +6,8 @@ import (
 
 	"github.com/tradersclub/TCUtils/logger"
 
-	"github.com/tradersclub/TCTemplateBack/model"
-	"github.com/tradersclub/TCTemplateBack/store"
+	"github.com/luannevesbtc/TCStocksCrypto/model"
+	"github.com/luannevesbtc/TCStocksCrypto/store"
 )
 
 // App interface de health para implementação

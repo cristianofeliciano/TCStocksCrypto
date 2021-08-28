@@ -1,9 +1,9 @@
 package event
 
 import (
+	"github.com/luannevesbtc/TCStocksCrypto/app"
+	"github.com/luannevesbtc/TCStocksCrypto/event/crypto"
 	"github.com/nats-io/nats.go"
-	"github.com/tradersclub/TCTemplateBack/app"
-	"github.com/tradersclub/TCTemplateBack/event/item"
 	"github.com/tradersclub/TCUtils/logger"
 )
 
@@ -15,7 +15,7 @@ type Options struct {
 
 // Register handler instance
 func Register(opts Options) {
-	item.Register(opts.Apps, opts.Nats)
+	crypto.Register(opts.Apps, opts.Nats)
 
 	logger.Info("Registered EVENT")
 

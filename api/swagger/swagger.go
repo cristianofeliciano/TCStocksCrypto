@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	docs "github.com/tradersclub/TCTemplateBack/docs"
+	docs "github.com/luannevesbtc/TCStocksCrypto/docs"
 	"github.com/tradersclub/TCUtils/logger"
 )
 
