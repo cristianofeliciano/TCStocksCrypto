@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/luannevesbtc/TCStocksCrypto/store"
 	"github.com/nats-io/nats.go"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/logger"
@@ -17,14 +16,11 @@ import (
 	emiddleware "github.com/labstack/echo/v4/middleware"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/luannevesbtc/TCStocksCrypto/api"
 	"github.com/luannevesbtc/TCStocksCrypto/app"
 	pocConfig "github.com/luannevesbtc/TCStocksCrypto/config"
 	"github.com/luannevesbtc/TCStocksCrypto/event"
 	"github.com/luannevesbtc/TCStocksCrypto/model"
-
-	auth "github.com/tradersclub/TCAuth/middleware/echo"
 )
 
 // Server is a interface to define contract to server up
@@ -39,13 +35,6 @@ type server struct {
 	Prometheus *prometheus.Prometheus
 	Validator  *validator.Validator
 	Nats       *nats.Conn
-	Session    auth.Middleware
-
-	DBReader     *sqlx.DB
-	StopDBReader context.CancelFunc
-	DBWriter     *sqlx.DB
-	StopDBWriter context.CancelFunc
-	Store        *store.Container
 
 	Ctx context.Context
 
@@ -74,7 +63,6 @@ func (e *server) Start() {
 
 	e.StartNats()
 	e.Cache = cache.NewMemcache(pocConfig.ConfigGlobal.Cache)
-	e.StartTCAuthClient()
 	e.StartApp()
 	e.RegisterEvent()
 	e.RegisterAPI()
@@ -99,26 +87,6 @@ func (e *server) TreatErrorsHTTP() {
 	}
 }
 
-// StartTCAuthClient only instance CientSession with middleware
-func (e *server) StartTCAuthClient() {
-	e.Session = auth.NewMiddle(pocConfig.ConfigGlobal.Auth)
-}
-
-func (e *server) CloseTCAuth() {
-	if e.Session != nil {
-		if err := e.Session.Close(); err != nil {
-			logger.Error("Cannot close gRPC from TCAuth ", err.Error())
-		} else {
-			logger.Info("Closed gRPC from TCAuth")
-		}
-	}
-}
-
-func (e *server) ConnectTCAuthClient() {
-	e.Session.Connect(pocConfig.ConfigGlobal.Auth)
-	logger.Info("Connected TCAuth via gRPC")
-}
-
 func (e *server) RegisterEvent() {
 	event.Register(event.Options{
 		Apps: e.App,
@@ -128,10 +96,8 @@ func (e *server) RegisterEvent() {
 
 func (e *server) StartApp() {
 	e.App = app.New(app.Options{
-		Stores:  e.Store,
-		Cache:   e.Cache,
-		Nats:    e.Nats,
-		Session: e.Session,
+		Cache: e.Cache,
+		Nats:  e.Nats,
 	})
 }
 
@@ -150,7 +116,6 @@ func (e *server) StartNats() {
 
 func (e *server) Stop() {
 	e.Nats.Close()
-	e.CloseTCAuth()
 	if err := e.Echo.Close(); err != nil {
 		logger.Error("cannot close echo ", err.Error())
 	}
@@ -159,10 +124,7 @@ func (e *server) Stop() {
 // ReloadConnections all connections like DB, Nats, ...
 func (e *server) ReloadConnections() {
 	e.Nats.Close()
-	e.CloseTCAuth()
 
 	logger.Info("Close all connections...")
 	e.StartNats()
-	e.ConnectTCAuthClient()
-
 }
