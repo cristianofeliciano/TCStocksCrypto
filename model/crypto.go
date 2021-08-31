@@ -43,11 +43,44 @@ type Market struct {
 	PriceChangePercentage7DInCurrency  float64   `json:"price_change_percentage_7d_in_currency"`
 }
 
+type GlobalInfos struct {
+	Data struct {
+		ActiveCryptocurrencies          int                `json:"active_cryptocurrencies"`
+		UpcomingIcos                    int                `json:"upcoming_icos"`
+		OngoingIcos                     int                `json:"ongoing_icos"`
+		EndedIcos                       int                `json:"ended_icos"`
+		Markets                         int                `json:"markets"`
+		TotalMarketCap                  map[string]float64 `json:"total_market_cap"`
+		TotalVolume                     map[string]float64 `json:"total_volume"`
+		MarketCapPercentage             map[string]float64 `json:"market_cap_percentage"`
+		MarketCapChangePercentage24HUsd float64            `json:"market_cap_change_percentage_24h_usd"`
+		UpdatedAt                       int                `json:"updated_at"`
+	} `json:"data"`
+}
+
+type CryptoCategories struct {
+	ID                 string    `json:"id"`
+	Name               string    `json:"name"`
+	MarketCap          float64   `json:"market_cap"`
+	MarketCapChange24H float64   `json:"market_cap_change_24h"`
+	Volume24H          float64   `json:"volume_24h"`
+	UpdatedAt          time.Time `json:"updated_at"`
+}
+
 // ToMarket converte uma interface{} para *Market
 func ToMarket(data interface{}) (*Market, error) {
 	value, ok := data.(*Market)
 	if !ok {
-		return nil, tcerr.New(http.StatusInternalServerError, "não foi possível converter interface{} para *Item", nil)
+		return nil, tcerr.New(http.StatusInternalServerError, "não foi possível converter interface{} para *ToMarket", nil)
+	}
+	return value, nil
+}
+
+// ToGlobalInfos converte uma interface{} para *GlobalInfos
+func ToGlobalInfos(data interface{}) (*GlobalInfos, error) {
+	value, ok := data.(*GlobalInfos)
+	if !ok {
+		return nil, tcerr.New(http.StatusInternalServerError, "não foi possível converter interface{} para *GlobalInfos", nil)
 	}
 	return value, nil
 }

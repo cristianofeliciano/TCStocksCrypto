@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/luannevesbtc/TCStocksCrypto/model"
 	"github.com/luannevesbtc/TCStocksCrypto/store"
@@ -15,22 +14,20 @@ import (
 )
 
 const (
-	URL_GET_MARKETS = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=%s&order=market_cap_desc&per_page=%d&page=%d&sparkline=false&price_change_percentage='1h24h7d'"
-	MAX_PER_PAGE    = 250
-	BRL             = "BRL"
-	USD             = "USD"
-	BTC             = "BTC"
+	URL_GET_MARKETS           = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=%s&order=market_cap_desc&per_page=%d&page=%d&sparkline=false&price_change_percentage='1h24h7d'"
+	MAX_PER_PAGE              = 250
+	BRL                       = "BRL"
+	USD                       = "USD"
+	BTC                       = "BTC"
+	URL_GET_GLOBAL_INFOS      = "https://api.coingecko.com/api/v3/global"
+	URL_GET_CRYPTO_CATEGORIES = "https://api.coingecko.com/api/v3/coins/categories/list"
 )
-
-type getCryptoMarkets struct {
-	Err  error
-	Id   string
-	Data []model.Market
-}
 
 // App interface de item para implementação
 type App interface {
 	GetCryptoMarkets(ctx context.Context) ([]model.Market, error)
+	GetGlobalInfos(ctx context.Context) (*model.GlobalInfos, error)
+	GetCryptoCategories(ctx context.Context) ([]model.CryptoCategories, error)
 }
 
 // NewApp cria uma nova instancia do serviço de exemplo item
@@ -43,11 +40,9 @@ func NewApp(stores *store.Container, nc *nats.Conn, cache cache.Cache) App {
 }
 
 type appImpl struct {
-	stores    *store.Container
-	startedAt time.Time
-	version   string
-	nc        *nats.Conn
-	cache     cache.Cache
+	stores *store.Container
+	nc     *nats.Conn
+	cache  cache.Cache
 }
 
 func (s *appImpl) GetCryptoMarkets(ctx context.Context) ([]model.Market, error) {
@@ -76,7 +71,50 @@ func (s *appImpl) GetCryptoMarkets(ctx context.Context) ([]model.Market, error) 
 		response = append(response, usdMarkets...)
 		i++
 	}
-	
+
+	return response, nil
+}
+
+func (s *appImpl) GetGlobalInfos(ctx context.Context) (*model.GlobalInfos, error) {
+	response := &model.GlobalInfos{}
+	req, err := http.NewRequest(http.MethodGet, URL_GET_GLOBAL_INFOS, nil)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das infos globais", nil)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das infos globais", nil)
+	}
+
+	decoder := json.NewDecoder(resp.Body)
+	errResponse := decoder.Decode(&response)
+	if errResponse != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das infos globais", nil)
+	}
+
+	return response, nil
+}
+
+func (s *appImpl) GetCryptoCategories(ctx context.Context) ([]model.CryptoCategories, error) {
+	response := make([]model.CryptoCategories, 0)
+	req, err := http.NewRequest(http.MethodGet, URL_GET_CRYPTO_CATEGORIES, nil)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das categorias de crypto", nil)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das categorias de crypto", nil)
+	}
+
+	decoder := json.NewDecoder(resp.Body)
+	errResponse := decoder.Decode(&response)
+	fmt.Println(errResponse)
+	if errResponse != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das categorias de crypto", nil)
+	}
+
 	return response, nil
 }
 
