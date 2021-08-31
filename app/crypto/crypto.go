@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	URL_GET_MARKETS = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=%s&order=market_cap_desc&per_page=%d&page=%d&sparkline=false&price_change_percentage=1h%2C24h%2C7d"
+	URL_GET_MARKETS = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=%s&order=market_cap_desc&per_page=%d&page=%d&sparkline=false&price_change_percentage='1h24h7d'"
 	MAX_PER_PAGE    = 250
 	BRL             = "BRL"
 	USD             = "USD"

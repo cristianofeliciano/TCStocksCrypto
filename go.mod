@@ -46,6 +46,7 @@ require (
 	github.com/tradersclub/TCUtils v0.16.10
 	github.com/uber-go/atomic v1.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
+	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
 	google.golang.org/api v0.54.0 // indirect
 	google.golang.org/genproto v0.0.0-20210825212027-de86158e7fda // indirect

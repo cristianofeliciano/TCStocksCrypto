@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/luannevesbtc/TCStocksCrypto/api/swagger"
 	"github.com/luannevesbtc/TCStocksCrypto/store"
 	"github.com/nats-io/nats.go"
 	"github.com/tradersclub/TCUtils/cache"
@@ -80,14 +79,6 @@ func (e *server) Start() {
 	e.RegisterEvent()
 	e.RegisterAPI()
 	e.TreatErrorsHTTP()
-
-	if e.Echo.Debug {
-		swagger.Register(swagger.Options{
-			Port:      pocConfig.ConfigGlobal.Server.Port,
-			Group:     e.Echo.Group("/swagger"),
-			AccessKey: pocConfig.ConfigGlobal.Docs.Key,
-		})
-	}
 
 	logger.Info("Start server PID: ", os.Getpid())
 	if err := e.Echo.Start(pocConfig.ConfigGlobal.Server.Port); err != nil {
