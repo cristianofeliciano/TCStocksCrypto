@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/labstack/echo/v4"
 	health "github.com/luannevesbtc/TCStocksCrypto/api/health"
-	v1 "github.com/luannevesbtc/TCStocksCrypto/api/v1"
 	"github.com/luannevesbtc/TCStocksCrypto/app"
 	"github.com/tradersclub/TCUtils/logger"
 )
@@ -16,7 +15,6 @@ type Options struct {
 
 // Register api instance
 func Register(opts Options) {
-	v1.Register(opts.Group, opts.Apps)
 	health.Register(opts.Group, opts.Apps)
 
 	logger.Info("Registered API")
