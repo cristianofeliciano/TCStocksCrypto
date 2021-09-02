@@ -112,7 +112,6 @@ func (s *appImpl) GetCryptoCategories(ctx context.Context) ([]model.CryptoCatego
 
 	decoder := json.NewDecoder(resp.Body)
 	errResponse := decoder.Decode(&response)
-	fmt.Println(errResponse)
 	if errResponse != nil {
 		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das categorias de crypto", nil)
 	}
@@ -134,7 +133,6 @@ func (s *appImpl) GetCryptoList(ctx context.Context) ([]model.CryptoTycker, erro
 
 	decoder := json.NewDecoder(resp.Body)
 	errResponse := decoder.Decode(&response)
-	fmt.Println(errResponse)
 	if errResponse != nil {
 		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das cryptos", nil)
 	}

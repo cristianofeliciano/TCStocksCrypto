@@ -2,7 +2,6 @@ package crypto
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/luannevesbtc/TCStocksCrypto/app"
@@ -106,7 +105,6 @@ func (e *event) getCryptoCategories(msg *nats.Msg) {
 
 func (e *event) getCryptoTickers(msg *nats.Msg) {
 	ctx := context.Background()
-	fmt.Println("event started")
 
 	var getCryptoTickersResponse getCryptoTickers
 
