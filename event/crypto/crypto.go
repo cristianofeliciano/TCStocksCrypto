@@ -2,7 +2,6 @@ package crypto
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -18,6 +17,7 @@ const (
 	TCGET_CRYPTO_MARKETS    = "tcget_crypto_markets"
 	TCGET_GLOBAL_INFOS      = "tcget_global_infos"
 	TCGET_CRYPTO_CATEGORIES = "tcget_crypto_categories"
+	TCGET_CRYPTO_TICKERS    = "tcget_crypto_tickers"
 )
 
 type getMarkets struct {
@@ -38,6 +38,12 @@ type getCryptoCategories struct {
 	Data []model.CryptoCategories
 }
 
+type getCryptoTickers struct {
+	Err  error
+	Id   string
+	Data []model.CryptoTycker
+}
+
 // Register group health check
 func Register(apps *app.Container, conn *nats.Conn) {
 	e := &event{
@@ -48,6 +54,7 @@ func Register(apps *app.Container, conn *nats.Conn) {
 	e.nc.Subscribe(TCGET_CRYPTO_MARKETS, e.getMarkets)
 	e.nc.Subscribe(TCGET_GLOBAL_INFOS, e.getGlobalInfos)
 	e.nc.Subscribe(TCGET_CRYPTO_CATEGORIES, e.getCryptoCategories)
+	e.nc.Subscribe(TCGET_CRYPTO_TICKERS, e.getCryptoTickers)
 }
 
 type event struct {
@@ -67,7 +74,6 @@ func (e *event) getMarkets(msg *nats.Msg) {
 	} else {
 		getMarketsResponse.Data = markets
 	}
-	return
 }
 
 func (e *event) getGlobalInfos(msg *nats.Msg) {
@@ -82,7 +88,6 @@ func (e *event) getGlobalInfos(msg *nats.Msg) {
 	} else {
 		getGlobalInfosResponse.Data = infos
 	}
-	return
 }
 
 func (e *event) getCryptoCategories(msg *nats.Msg) {
@@ -97,7 +102,19 @@ func (e *event) getCryptoCategories(msg *nats.Msg) {
 	} else {
 		getCryptoCategoriesResponse.Data = categories
 	}
-	result, _ := json.Marshal(categories)
-	fmt.Println(result)
-	return
+}
+
+func (e *event) getCryptoTickers(msg *nats.Msg) {
+	ctx := context.Background()
+	fmt.Println("event started")
+
+	var getCryptoTickersResponse getCryptoTickers
+
+	list, err := e.apps.Crypto.GetCryptoList(ctx)
+	if err != nil {
+		logger.ErrorContext(ctx, "event.session.get_crypto_tickers", err.Error())
+		getCryptoTickersResponse.Err = tcerr.NewError(http.StatusInternalServerError, "event.session.get_crypto_tickers", err.Error())
+	} else {
+		getCryptoTickersResponse.Data = list
+	}
 }

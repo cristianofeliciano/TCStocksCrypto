@@ -21,6 +21,7 @@ const (
 	BTC                       = "BTC"
 	URL_GET_GLOBAL_INFOS      = "https://api.coingecko.com/api/v3/global"
 	URL_GET_CRYPTO_CATEGORIES = "https://api.coingecko.com/api/v3/coins/categories/list"
+	URL_GET_CRYPTO_LIST       = "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
 )
 
 // App interface de item para implementação
@@ -28,6 +29,7 @@ type App interface {
 	GetCryptoMarkets(ctx context.Context) ([]model.Market, error)
 	GetGlobalInfos(ctx context.Context) (*model.GlobalInfos, error)
 	GetCryptoCategories(ctx context.Context) ([]model.CryptoCategories, error)
+	GetCryptoList(ctx context.Context) ([]model.CryptoTycker, error)
 }
 
 // NewApp cria uma nova instancia do serviço de exemplo item
@@ -113,6 +115,28 @@ func (s *appImpl) GetCryptoCategories(ctx context.Context) ([]model.CryptoCatego
 	fmt.Println(errResponse)
 	if errResponse != nil {
 		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das categorias de crypto", nil)
+	}
+
+	return response, nil
+}
+
+func (s *appImpl) GetCryptoList(ctx context.Context) ([]model.CryptoTycker, error) {
+	response := make([]model.CryptoTycker, 0)
+	req, err := http.NewRequest(http.MethodGet, URL_GET_CRYPTO_LIST, nil)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das cryptos", nil)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das cryptos", nil)
+	}
+
+	decoder := json.NewDecoder(resp.Body)
+	errResponse := decoder.Decode(&response)
+	fmt.Println(errResponse)
+	if errResponse != nil {
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o parser das cryptos", nil)
 	}
 
 	return response, nil

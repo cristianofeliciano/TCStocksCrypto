@@ -67,6 +67,12 @@ type CryptoCategories struct {
 	UpdatedAt          time.Time `json:"updated_at"`
 }
 
+type CryptoTycker struct {
+	ID     string `json:"id"`
+	Symbol string `json:"symbol"`
+	Name   string `json:"name"`
+}
+
 // ToMarket converte uma interface{} para *Market
 func ToMarket(data interface{}) (*Market, error) {
 	value, ok := data.(*Market)
