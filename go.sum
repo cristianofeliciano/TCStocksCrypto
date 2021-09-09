@@ -792,6 +792,8 @@ github.com/tradersclub/TCAuth v0.5.6 h1:ng1CBkfo1ZH+N1Ne0Q4LR/nsaETMdE0C/LTBgiCe
 github.com/tradersclub/TCAuth v0.5.6/go.mod h1:YmmFSMk3DGTQGpllvsKJqSS9ff/+gMitMzPeOy/ruJQ=
 github.com/tradersclub/TCAuth v0.7.2 h1:U4yAMsNYwIQHaTHrCgpEBUDbE/3hJPPVM4vsfUd+NkA=
 github.com/tradersclub/TCAuth v0.7.2/go.mod h1:Tm6rgVbEz8m8tC+3XjrTuKmnkTt2QrGBVcHJE0sb7LI=
+github.com/tradersclub/TCNatsModel v1.21.0 h1:x45CdKG7aBgJAhmMzJTk1akOG0hgDqmzgVl+ai18ADI=
+github.com/tradersclub/TCNatsModel v1.21.0/go.mod h1:hXhsrgIO4zOTEHHauZ2IVZ6Fx1IylNtHt+ju1Q9FIfQ=
 github.com/tradersclub/TCUtils v0.5.10/go.mod h1:fNyI99nAVrMC3nmt24zFcwwhW7cdXDvetalpkNzdnOo=
 github.com/tradersclub/TCUtils v0.6.0 h1:DQ7/Un3XB+sw5fbBARreIRyyIow1YqM5eaIT8rKHrcE=
 github.com/tradersclub/TCUtils v0.6.0/go.mod h1:fNyI99nAVrMC3nmt24zFcwwhW7cdXDvetalpkNzdnOo=

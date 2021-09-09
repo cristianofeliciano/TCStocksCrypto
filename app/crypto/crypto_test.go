@@ -7,8 +7,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
-	"github.com/luannevesbtc/TCStocksCrypto/mocks"
-	"github.com/luannevesbtc/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/mocks"
+	"github.com/tradersclub/TCStocksCrypto/model"
 )
 
 func TestGetMarkets(t *testing.T) {

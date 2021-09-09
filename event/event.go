@@ -1,9 +1,9 @@
 package event
 
 import (
-	"github.com/luannevesbtc/TCStocksCrypto/app"
-	"github.com/luannevesbtc/TCStocksCrypto/event/crypto"
 	"github.com/nats-io/nats.go"
+	"github.com/tradersclub/TCStocksCrypto/app"
+	"github.com/tradersclub/TCStocksCrypto/event/crypto"
 	"github.com/tradersclub/TCUtils/logger"
 )
 

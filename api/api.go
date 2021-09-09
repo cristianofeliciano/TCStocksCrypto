@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
-	health "github.com/luannevesbtc/TCStocksCrypto/api/health"
-	"github.com/luannevesbtc/TCStocksCrypto/app"
+	health "github.com/tradersclub/TCStocksCrypto/api/health"
+	"github.com/tradersclub/TCStocksCrypto/app"
 	"github.com/tradersclub/TCUtils/logger"
 )
 

@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	model "github.com/luannevesbtc/TCStocksCrypto/model"
+	model "github.com/tradersclub/TCStocksCrypto/model"
 )
 
 // MockApp is a mock of App interface.

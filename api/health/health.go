@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/luannevesbtc/TCStocksCrypto/app"
-	"github.com/luannevesbtc/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/app"
+	"github.com/tradersclub/TCStocksCrypto/model"
 )
 
 // Register group health check

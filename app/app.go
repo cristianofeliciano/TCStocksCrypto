@@ -5,10 +5,10 @@ import (
 
 	"github.com/nats-io/nats.go"
 
-	"github.com/luannevesbtc/TCStocksCrypto/app/crypto"
-	"github.com/luannevesbtc/TCStocksCrypto/app/health"
-	"github.com/luannevesbtc/TCStocksCrypto/store"
 	auth "github.com/tradersclub/TCAuth/middleware/echo"
+	"github.com/tradersclub/TCStocksCrypto/app/crypto"
+	"github.com/tradersclub/TCStocksCrypto/app/health"
+	"github.com/tradersclub/TCStocksCrypto/store"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/logger"
 )

@@ -8,9 +8,9 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 
-	"github.com/luannevesbtc/TCStocksCrypto/model"
-	"github.com/luannevesbtc/TCStocksCrypto/store/health"
-	"github.com/luannevesbtc/TCStocksCrypto/test"
+	"github.com/tradersclub/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/store/health"
+	"github.com/tradersclub/TCStocksCrypto/test"
 	"github.com/tradersclub/TCUtils/tcerr"
 
 	"github.com/google/go-cmp/cmp"

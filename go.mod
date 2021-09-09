@@ -1,4 +1,4 @@
-module github.com/luannevesbtc/TCStocksCrypto
+module github.com/tradersclub/TCStocksCrypto
 
 go 1.15
 
@@ -43,6 +43,7 @@ require (
 	github.com/swaggo/gin-swagger v1.3.1 // indirect
 	github.com/swaggo/swag v1.7.1
 	github.com/tradersclub/TCAuth v0.7.2
+	github.com/tradersclub/TCNatsModel v1.21.0
 	github.com/tradersclub/TCUtils v0.16.10
 	github.com/uber-go/atomic v1.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect

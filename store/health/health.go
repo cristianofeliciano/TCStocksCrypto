@@ -10,7 +10,7 @@ import (
 	"github.com/tradersclub/TCUtils/tcerr"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/luannevesbtc/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/model"
 )
 
 // Store interface para implementação do health

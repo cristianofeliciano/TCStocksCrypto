@@ -16,11 +16,11 @@ import (
 	emiddleware "github.com/labstack/echo/v4/middleware"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/luannevesbtc/TCStocksCrypto/api"
-	"github.com/luannevesbtc/TCStocksCrypto/app"
-	pocConfig "github.com/luannevesbtc/TCStocksCrypto/config"
-	"github.com/luannevesbtc/TCStocksCrypto/event"
-	"github.com/luannevesbtc/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/api"
+	"github.com/tradersclub/TCStocksCrypto/app"
+	pocConfig "github.com/tradersclub/TCStocksCrypto/config"
+	"github.com/tradersclub/TCStocksCrypto/event"
+	"github.com/tradersclub/TCStocksCrypto/model"
 )
 
 // Server is a interface to define contract to server up

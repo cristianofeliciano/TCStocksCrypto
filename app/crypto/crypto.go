@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/luannevesbtc/TCStocksCrypto/model"
-	"github.com/luannevesbtc/TCStocksCrypto/store"
 	"github.com/nats-io/nats.go"
+	"github.com/tradersclub/TCStocksCrypto/model"
+	"github.com/tradersclub/TCStocksCrypto/store"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/tcerr"
 )

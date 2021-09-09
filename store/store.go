@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/luannevesbtc/TCStocksCrypto/store/health"
+	"github.com/tradersclub/TCStocksCrypto/store/health"
 	"github.com/tradersclub/TCUtils/logger"
 )
 
