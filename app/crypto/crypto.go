@@ -7,8 +7,7 @@ import (
 	"net/http"
 
 	"github.com/nats-io/nats.go"
-	"github.com/tradersclub/TCStocksCrypto/model"
-	"github.com/tradersclub/TCStocksCrypto/store"
+	model "github.com/tradersclub/TCNatsModel/TCCrypto"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/tcerr"
 )
@@ -33,18 +32,16 @@ type App interface {
 }
 
 // NewApp cria uma nova instancia do serviço de exemplo item
-func NewApp(stores *store.Container, nc *nats.Conn, cache cache.Cache) App {
+func NewApp(nc *nats.Conn, cache cache.Cache) App {
 	return &appImpl{
-		stores: stores,
-		nc:     nc,
-		cache:  cache,
+		nc:    nc,
+		cache: cache,
 	}
 }
 
 type appImpl struct {
-	stores *store.Container
-	nc     *nats.Conn
-	cache  cache.Cache
+	nc    *nats.Conn
+	cache cache.Cache
 }
 
 func (s *appImpl) GetCryptoMarkets(ctx context.Context) ([]model.Market, error) {
@@ -81,7 +78,7 @@ func (s *appImpl) GetGlobalInfos(ctx context.Context) (*model.GlobalInfos, error
 	response := &model.GlobalInfos{}
 	req, err := http.NewRequest(http.MethodGet, URL_GET_GLOBAL_INFOS, nil)
 	if err != nil {
-		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das infos globais", nil)
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar new request das infos globais", nil)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
@@ -102,7 +99,7 @@ func (s *appImpl) GetCryptoCategories(ctx context.Context) ([]model.CryptoCatego
 	response := make([]model.CryptoCategories, 0)
 	req, err := http.NewRequest(http.MethodGet, URL_GET_CRYPTO_CATEGORIES, nil)
 	if err != nil {
-		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das categorias de crypto", nil)
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o new request das categorias de crypto", nil)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
@@ -123,7 +120,7 @@ func (s *appImpl) GetCryptoList(ctx context.Context) ([]model.CryptoTycker, erro
 	response := make([]model.CryptoTycker, 0)
 	req, err := http.NewRequest(http.MethodGet, URL_GET_CRYPTO_LIST, nil)
 	if err != nil {
-		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get das cryptos", nil)
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o new request das cryptos", nil)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
@@ -145,7 +142,7 @@ func getMarketRequest(currency string, page int) ([]model.Market, error) {
 
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf(URL_GET_MARKETS, currency, MAX_PER_PAGE, page), nil)
 	if err != nil {
-		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o get dos markets", currency)
+		return nil, tcerr.NewError(http.StatusInternalServerError, "erro ao realizar o new request dos markets", currency)
 	}
 
 	resp, err := http.DefaultClient.Do(req)

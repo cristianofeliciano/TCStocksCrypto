@@ -6,44 +6,13 @@ import (
 	"net/http"
 
 	"github.com/nats-io/nats.go"
+	nmodelCrypto "github.com/tradersclub/TCNatsModel/TCCrypto"
 	"github.com/tradersclub/TCStocksCrypto/app"
-	"github.com/tradersclub/TCStocksCrypto/model"
 
 	nmodel "github.com/tradersclub/TCNatsModel/TCStocksBovespa"
 	"github.com/tradersclub/TCUtils/logger"
 	"github.com/tradersclub/TCUtils/tcerr"
 )
-
-const (
-	TCGET_CRYPTO_MARKETS    = "tcget_crypto_markets"
-	TCGET_GLOBAL_INFOS      = "tcget_global_infos"
-	TCGET_CRYPTO_CATEGORIES = "tcget_crypto_categories"
-	TCGET_CRYPTO_TICKERS    = "tcget_crypto_tickers"
-)
-
-type getMarkets struct {
-	Err  error
-	Id   string
-	Data []model.Market
-}
-
-type getGlobalInfos struct {
-	Err  error
-	Id   string
-	Data *model.GlobalInfos
-}
-
-type getCryptoCategories struct {
-	Err  error
-	Id   string
-	Data []model.CryptoCategories
-}
-
-type getCryptoTickers struct {
-	Err  error
-	Id   string
-	Data []model.CryptoTycker
-}
 
 // Register group health check
 func Register(apps *app.Container, conn *nats.Conn) {
@@ -52,10 +21,10 @@ func Register(apps *app.Container, conn *nats.Conn) {
 		nc:   conn,
 	}
 
-	e.nc.Subscribe(TCGET_CRYPTO_MARKETS, e.getMarkets)
-	e.nc.Subscribe(TCGET_GLOBAL_INFOS, e.getGlobalInfos)
-	e.nc.Subscribe(TCGET_CRYPTO_CATEGORIES, e.getCryptoCategories)
-	e.nc.Subscribe(TCGET_CRYPTO_TICKERS, e.getCryptoTickers)
+	e.nc.Subscribe(nmodelCrypto.TCGET_CRYPTO_MARKETS, e.getMarkets)
+	e.nc.Subscribe(nmodelCrypto.TCGET_GLOBAL_INFOS, e.getGlobalInfos)
+	e.nc.Subscribe(nmodelCrypto.TCGET_CRYPTO_CATEGORIES, e.getCryptoCategories)
+	e.nc.Subscribe(nmodelCrypto.TCGET_CRYPTO_TICKERS, e.getCryptoTickers)
 }
 
 type event struct {
@@ -66,7 +35,7 @@ type event struct {
 func (e *event) getMarkets(msg *nats.Msg) {
 	ctx := context.Background()
 
-	var getMarketsResponse getMarkets
+	var getMarketsResponse nmodelCrypto.GetMarkets
 
 	markets, err := e.apps.Crypto.GetCryptoMarkets(ctx)
 	if err != nil {
@@ -80,7 +49,7 @@ func (e *event) getMarkets(msg *nats.Msg) {
 func (e *event) getGlobalInfos(msg *nats.Msg) {
 	ctx := context.Background()
 
-	var getGlobalInfosResponse getGlobalInfos
+	var getGlobalInfosResponse nmodelCrypto.GetGlobalInfos
 
 	infos, err := e.apps.Crypto.GetGlobalInfos(ctx)
 	if err != nil {
@@ -94,7 +63,7 @@ func (e *event) getGlobalInfos(msg *nats.Msg) {
 func (e *event) getCryptoCategories(msg *nats.Msg) {
 	ctx := context.Background()
 
-	var getCryptoCategoriesResponse getCryptoCategories
+	var getCryptoCategoriesResponse nmodelCrypto.GetCryptoCategories
 
 	categories, err := e.apps.Crypto.GetCryptoCategories(ctx)
 	if err != nil {
@@ -108,7 +77,7 @@ func (e *event) getCryptoCategories(msg *nats.Msg) {
 func (e *event) getCryptoTickers(msg *nats.Msg) {
 	ctx := context.Background()
 
-	var getCryptoTickersResponse getCryptoTickers
+	var getCryptoTickersResponse nmodelCrypto.GetCryptoTickers
 
 	list, err := e.apps.Crypto.GetCryptoList(ctx)
 	if err != nil {

@@ -16,7 +16,6 @@ import (
 	emiddleware "github.com/labstack/echo/v4/middleware"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/tradersclub/TCStocksCrypto/api"
 	"github.com/tradersclub/TCStocksCrypto/app"
 	pocConfig "github.com/tradersclub/TCStocksCrypto/config"
 	"github.com/tradersclub/TCStocksCrypto/event"
@@ -65,7 +64,6 @@ func (e *server) Start() {
 	e.Cache = cache.NewMemcache(pocConfig.ConfigGlobal.Cache)
 	e.StartApp()
 	e.RegisterEvent()
-	e.RegisterAPI()
 	e.TreatErrorsHTTP()
 
 	logger.Info("Start server PID: ", os.Getpid())
@@ -98,13 +96,6 @@ func (e *server) StartApp() {
 	e.App = app.New(app.Options{
 		Cache: e.Cache,
 		Nats:  e.Nats,
-	})
-}
-
-func (e *server) RegisterAPI() {
-	api.Register(api.Options{
-		Group: e.Echo.Group(""),
-		Apps:  e.App,
 	})
 }
 

@@ -7,22 +7,18 @@ import (
 
 	auth "github.com/tradersclub/TCAuth/middleware/echo"
 	"github.com/tradersclub/TCStocksCrypto/app/crypto"
-	"github.com/tradersclub/TCStocksCrypto/app/health"
-	"github.com/tradersclub/TCStocksCrypto/store"
 	"github.com/tradersclub/TCUtils/cache"
 	"github.com/tradersclub/TCUtils/logger"
 )
 
 // Container modelo para exportação dos serviços instanciados
 type Container struct {
-	Health  health.App
 	Crypto  crypto.App
 	Session auth.Middleware
 }
 
 // Options struct de opções para a criação de uma instancia dos serviços
 type Options struct {
-	Stores  *store.Container
 	Cache   cache.Cache
 	Nats    *nats.Conn
 	Session auth.Middleware
@@ -35,8 +31,7 @@ type Options struct {
 func New(opts Options) *Container {
 
 	container := &Container{
-		Health:  health.NewApp(opts.Stores, opts.Version, opts.StartedAt),
-		Crypto:  crypto.NewApp(opts.Stores, opts.Nats, opts.Cache),
+		Crypto:  crypto.NewApp(opts.Nats, opts.Cache),
 		Session: opts.Session,
 	}
 
