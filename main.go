@@ -3,8 +3,8 @@ package main
 import (
 	"syscall"
 
-	pocConfig "github.com/luannevesbtc/TCStocksCrypto/config"
-	pocServer "github.com/luannevesbtc/TCStocksCrypto/server"
+	pocConfig "github.com/tradersclub/TCStocksCrypto/config"
+	pocServer "github.com/tradersclub/TCStocksCrypto/server"
 	conf "github.com/tradersclub/TCUtils/config"
 	confCommon "github.com/tradersclub/TCUtils/config/common"
 	"github.com/tradersclub/TCUtils/logger"
